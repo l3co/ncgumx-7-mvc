@@ -10,21 +10,21 @@ exports.getAddProducts = (req, res, next) => {
     });
 }
 
-exports.postAddProducts = (req, res, next) => {
+exports.postAddProducts = async (req, res, next) => {
     const product = new Product(req.body.title);
-    product.save();
+    await product.save()
     res.redirect('/');
 }
 
 exports.showProducts = (req, res, next) => {
-    const products = Product.fetchAll();
-    res.render('shop', {
-        prods: products,
-        pageTitle: 'Shop',
-        path: '/',
-        hasProducts: products.length > 0,
-        activeShop: true,
-        productCSS: true
+    Product.fetchAll(products => {
+        res.render('shop', {
+            prods: products,
+            pageTitle: 'Shop',
+            path: '/',
+            activeShop: true,
+            productCSS: true
+        });
     });
 }
 
